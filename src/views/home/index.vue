@@ -6,5 +6,9 @@ import MapData from './components/MapData.vue';
 
 <template>
 <MapData />
-<!-- <search></search> -->
+<search></search>
 </template>
+
+<script>
+
+</script>
