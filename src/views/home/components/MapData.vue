@@ -16,7 +16,7 @@ import { onMounted } from 'vue'
 // 1-定义外部参数
 const props = defineProps({
   viewConf: {  default: () => ({}) },
-  defLyrs: {  default: () => ['vec_c'] }
+  defLyrs: {  default: () => ['vec_c','cva_c'] }
 })
 
 // 2-定义地图创建完毕的事件
@@ -67,6 +67,7 @@ onMounted(() => {
   // 3.4-触发创建完毕的事件，传回地图实例对象
   emit('created', map)
 })
+
 </script>
 
 
