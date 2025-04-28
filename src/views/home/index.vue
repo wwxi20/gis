@@ -7,7 +7,7 @@ import MapData from './components/MapData.vue';
 
 <template>
 <MapData />
-<search></search>
+
 <!-- <Zoom /> -->
 </template>
 
