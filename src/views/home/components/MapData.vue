@@ -2,6 +2,8 @@
     <div class="container">
         <div id="mapDom" class="map"></div>
         <search :map="map" />
+        <ToolBox :map="map" />
+        <Mark v-if="map" :map="map" />
     </div>
 </template>
 
@@ -12,7 +14,8 @@ import View from 'ol/View.js';
 import TileLayer from 'ol/layer/Tile.js';
 import XYZ from 'ol/source/XYZ.js';
 import Search from './search.vue';
-
+import ToolBox from './Control/ToolBox.vue';
+import Mark from './Mark.vue';
 
 // 1-定义外部参数
 const props = defineProps({
