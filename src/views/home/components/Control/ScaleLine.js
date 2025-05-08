@@ -24,6 +24,7 @@ const onScaleChange = (map) => {
     // // 添加到地图
     // map.addControl(scale);
     map.addControl(new ScaleLine());
+    
 };
 
 export { onScaleChange };

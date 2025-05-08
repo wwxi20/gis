@@ -1,4 +1,4 @@
-const ResetCenter = function (map){
+const resetCenter = function (map){
     const point = [12758612.973162018, 3562849.0216611675];
     // props.map.getView().setCenter(point);
     map.getView().setCenter(point);
@@ -6,4 +6,4 @@ const ResetCenter = function (map){
 
 }
 
-export {ResetCenter}
+export {resetCenter}

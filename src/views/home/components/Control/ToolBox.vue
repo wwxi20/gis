@@ -1,15 +1,15 @@
 <template>
 <div class="tool-box">
-<button @click="ResetCenter(map)">复位</button>
-<button @click="onScaleChange(map )">比例尺线</button>
-<button @click="onScaleChange(map , 'bar')">比例尺条</button>
+<button @click="resetCenter(map)">复位</button>
+<button @click="addOverviewMap">地图鹰眼</button>
 
 </div>
 </template>
 
 <script setup>
-import { ResetCenter } from './ResetCenter';
-import { onScaleChange } from './ScaleLine';
+import { resetCenter } from './ResetCenter';
+import {createOverview} from './Overview'
+
 
 const props = defineProps({
     map: {
@@ -17,6 +17,16 @@ const props = defineProps({
         required: true
     }
 });
+
+const addOverviewMap = () => {
+    if (props.map) {
+        setTimeout(() => {
+            createOverview(props.map);
+        }, 100); // 延迟 100 毫秒
+    } else {
+        console.error('地图对象无效');
+    }
+};
 </script>
 
 <style scoped>
@@ -28,34 +38,7 @@ const props = defineProps({
     right: 50px;
     background-color: pink;
 }
-/* 确保比例尺条有合适的样式 */
-.ol-scale-bar {
-    background: rgba(0, 60, 136, 0.3);
-    border-radius: 4px;
-    bottom: 8px;
-    left: 8px;
-    padding: 2px;
-    position: absolute;
-}
-
-.ol-scale-step-marker {
-    background-color: #fff;
-    border: 1px solid #000;
-    height: 15px;
-}
-
-.ol-scale-step-text {
-    color: #fff;
-    text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
-}
-
-.ol-scale-text {
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 4px;
-    bottom: 30px;
-    color: #000;
-    left: 8px;
-    padding: 2px;
-    position: absolute;
+button{
+    cursor: pointer;
 }
 </style>

@@ -2,8 +2,9 @@
     <div class="container">
         <div id="mapDom" class="map"></div>
         <search :map="map" />
-        <ToolBox :map="map" />
+        <ToolBox v-if="map" :map="map" />
         <Mark v-if="map" :map="map" />
+        <Measure v-if="map" :map="map" />
     </div>
 </template>
 
@@ -16,6 +17,9 @@ import XYZ from 'ol/source/XYZ.js';
 import Search from './search.vue';
 import ToolBox from './Control/ToolBox.vue';
 import Mark from './Mark.vue';
+import Measure from './Measure.vue';
+import { ScaleLine } from 'ol/control';
+
 
 // 1-定义外部参数
 const props = defineProps({
@@ -60,10 +64,17 @@ onMounted(() => {
             });
         })
     });
+    // 创建比例尺实例
+    const scaleLine = new ScaleLine({
+        bar: true, // 显示比例尺条
+        text: true // 同时显示数字（可根据需求设置）
+    });
+    // 将比例尺添加到地图
+    map.value.addControl(scaleLine)
 });
 </script>
 
-<style scoped>
+<style >
 .container {
     width: 100vw;
     height: 100vh;
@@ -77,4 +88,89 @@ onMounted(() => {
     margin: 0;
     padding: 0;
 }
+.ol-scale-bar{
+    padding-left:10px;
+    padding-top: 15px;
+    padding-right: 25px;
+    position: absolute;
+    left: 20px;
+    bottom: 80px;
+    background-color: rgba(232, 234, 236, 0.3)
+}
+
+/* 比例尺 */
+.ol-scale-line {
+    background: rgba(255, 255, 255, 0.8); /* 设置比例尺条的背景色 */
+    border-radius: 4px; /* 设置圆角 */
+    bottom: 10px; /* 距离地图底部的距离 */
+    left: 10px; /* 距离地图左侧的距离 */
+    display: flex;
+    padding: 2px; /* 内边距 */
+}
+.ol-scale-bar-inner {
+    display: flex;
+    align-items: center;
+    /* background-color: white; */
+}
+
+.ol-scale-text {
+    display: none;
+}
+
+.ol-scale-step-marker {
+    display: none;
+}
+
+.ol-scale-singlebar {
+    height: 6px;
+}
+
+.ol-scale-singlebar-odd {
+    background-color: #000;
+}
+
+.ol-scale-singlebar-even {
+    background-color: #fff;
+    position: relative;
+    top: -10px;
+}
+.ol-scale-step-text {
+    color: #000; /* 刻度数字的颜色 */
+    font-size: 10px; /* 字体大小 */
+    /* position: relative;
+    top: 2px;
+    right: 10px */
+}
+
+/* 放大缩小 */
+.ol-overlaycontainer{
+    position: relative;
+
+}
+.ol-zoom{
+    position: absolute;
+    top: 35px;
+    left: 161px;
+}
+.ol-zoom button{
+    border: none;
+    background-color: white;
+    margin-right: 10px;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+/* 旋转 */
+.ol-rotate{
+    position: absolute;
+    top: 36px;
+    left: 115px;
+}
+.ol-rotate button{
+    border: none;
+    background-color: white;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
 </style>

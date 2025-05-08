@@ -1,6 +1,6 @@
 <template>
     <div class="marker-controls">
-        <div class="button-swich">
+        <div class="button-switch">
         <button @click="toggleMarkingButtons">{{ showMarkingButtons ? '标记 收起' : '标记 展开' }}</button>
         </div>
         <div v-if="showMarkingButtons" class="sub-buttons">
@@ -229,7 +229,7 @@ const clearMarkers = () => {
     color: #5bb5f1;
 }
 
-.button-swich button{
+.button-switch button{
     margin-bottom: 8px;
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
 }
