@@ -1,22 +1,31 @@
-// Overview.js
-import OverviewMap from 'ol/control/OverviewMap.js';
-import TileLayer from 'ol/layer/Tile.js';
+import { OverviewMap } from 'ol/control';
+import TileLayer from 'ol/layer/Tile';
+import XYZ from 'ol/source/XYZ';
 
-const createOverview = map =>
-{
-  // 获取主地图
-  const baseLayer = map.getLayers().item(0)
+let overviewMapInstance = null;
 
-  // 创建鹰眼控件
-  const miniMap = new OverviewMap({
-    collapsed: false,
-    layers: [new TileLayer({ source: baseLayer.getSource() })]
-  })
+// 创建鹰眼地图的函数
+export const createOverview = (map) => {
+    if (overviewMapInstance) return;
 
-  // 控件添加到地图
-  map.addControl(miniMap)
-}
+    const overviewLayer = new TileLayer({
+        source: new XYZ({
+            url: 'http://tile.openstreetmap.org/{z}/{x}/{y}.png'
+        })
+    });
 
+    overviewMapInstance = new OverviewMap({
+        layers: [overviewLayer],
+        collapsed: false 
+    });
 
+    map.addControl(overviewMapInstance);
+};
 
-export { createOverview };
+// 移除鹰眼地图的函数
+export const removeOverview = (map) => {
+    if (overviewMapInstance) {
+        map.removeControl(overviewMapInstance);
+        overviewMapInstance = null;
+    }
+};

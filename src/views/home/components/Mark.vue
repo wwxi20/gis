@@ -213,7 +213,7 @@ const clearMarkers = () => {
 .marker-controls {
     position: absolute;
     top: 80px;
-    right: 100px;
+    right: 110px;
     z-index: 1000;
 }
 

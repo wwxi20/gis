@@ -170,7 +170,7 @@ const searchPOI = async () => {
 <style scoped>
 .search-container {
     position: absolute;
-    left: 100px;
+    left: 80px;
     top: 80px;
 }
 

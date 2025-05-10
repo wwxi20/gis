@@ -160,7 +160,7 @@ const clearAll = () => {
 .measure-controls {
     position: absolute;
     top: 80px;
-    right: 200px;
+    right: 210px;
     z-index: 1000;
 }
 

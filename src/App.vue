@@ -4,7 +4,8 @@ import home from './views/home/index.vue'
 </script>
 
 <template>
-  <home></home>
+  <!-- <home></home> -->
+  <router-view/>
 </template>
 
 <style >
