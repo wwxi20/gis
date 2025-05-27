@@ -33,9 +33,8 @@
   
   // 用户信息
   const userInfo = ref({
-    avatar: 'https://example.com/avatar.jpg', // 请替换为实际头像链接
-    nickname: 'John Doe',
-    birthday: '1995-05-10'
+    nickname: 'abc',
+    birthday: '2000-01-01'
   });
   
   // 编辑状态
@@ -48,8 +47,6 @@
   
   // 保存修改
   const saveChanges = () => {
-    // 这里可以添加保存到后端的逻辑，例如使用axios发送请求
-    console.log('保存的用户信息:', userInfo.value);
     isEditing.value = false;
   };
   
@@ -60,9 +57,7 @@
   
   // 退出登录
   const logout = () => {
-    // 这里可以添加退出登录的逻辑，例如清除token、跳转到登录页等
     alert('即将退出')
-    console.log('执行退出登录操作');
   };
   </script>
   

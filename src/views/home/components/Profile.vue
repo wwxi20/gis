@@ -51,28 +51,34 @@
   </script>
   
   <style scoped>
-  .avatar-dropdown {
+  /* 重置RouterLink的默认样式 */
+a {
+    color: inherit;
+    padding: 0;
+    text-decoration: none;
+}
+.avatar-dropdown {
     position: absolute;
     top: 76px;
     right: 50px;
     display: inline-block;
-  }
+}
   
-  .avatar {
+.avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     overflow: hidden;
     cursor: pointer;
-  }
+}
   
-  .avatar img {
+.avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
+}
   
-  .dropdown {
+.dropdown {
     position: absolute;
     top: 100%;
     right:  -10px;
@@ -80,8 +86,8 @@
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
     min-width: 120px;
     z-index: 1;
-  }
-  .triangle{
+}
+.triangle{
     width: 0;
     height: 0;
     border-left: 10px solid transparent;
@@ -89,15 +95,15 @@
     border-bottom: 10px solid white;
     position: relative;
     right: -80px;
-  }
-  .dropdown-item {
+}
+.dropdown-item {
     padding: 10px 15px;
     background-color: #fff;
     cursor: pointer;
     transition: background-color 0.2s;
-  }
+}
   
-  .dropdown-item:hover {
+.dropdown-item:hover {
     background-color: #f0f0f0;
-  }
+}
   </style>

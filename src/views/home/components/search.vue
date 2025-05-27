@@ -78,7 +78,7 @@ const addMarkers = (pois) => {
         
         const feature = new Feature({
             geometry: new Point(convertedPoint),
-            poiData: poi // 存储 poi 数据，方便后续查找
+            poiData: poi 
         });
         // 为每个特征应用样式
         feature.setStyle(defaultPointStyle);

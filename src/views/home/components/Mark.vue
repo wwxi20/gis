@@ -175,7 +175,7 @@ onMounted(() => {
                 // 检查最后一个点和第一个点是否接近（判断是否闭合）
                 const startPoint = lineCoordinates.value[0];
                 const endPoint = event.coordinate;
-                const distanceThreshold = 10; // 距离阈值，可调整
+                const distanceThreshold = 10; // 距离阈值
                 const dx = startPoint[0] - endPoint[0];
                 const dy = startPoint[1] - endPoint[1];
                 const distance = Math.sqrt(dx * dx + dy * dy);

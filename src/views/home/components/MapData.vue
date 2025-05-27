@@ -31,7 +31,8 @@ const props = defineProps({
 });
 
 const map = ref(null);
-// 存储图层可见性状态
+
+// 图层管理，存储图层可见性状态
 const layerVisibility = ref({
     vec_c: true,
     img_c: false,

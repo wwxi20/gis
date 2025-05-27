@@ -61,11 +61,11 @@ const measurementLayer = new VectorLayer({
         } else if (geometryType === 'Polygon') {
             return new Style({
                 stroke: new Stroke({
-                    color: 'red',
+                    color: 'blue',
                     width: 2
                 }),
                 fill: new Fill({
-                    color: 'rgba(255, 0, 0, 0.2)'
+                    color: 'rgba(0, 0, 255, 0.2)'
                 }),
                 text: new Text({
                     text: feature.get('areaText'),
@@ -110,7 +110,7 @@ onMounted(() => {
                 const coordinate = event.coordinate;
                 if (currentMeasurementType.value === 'distance' || currentMeasurementType.value === 'area') {
                     measurementCoordinates.value.push(coordinate);
-                    if (currentMeasurementType.value === 'distance' && measurementCoordinates.value.length >= 2) {
+                    if (currentMeasurementType.value === 'distance' && measurementCoordinates.value.length >= 2) { // 折线 至少2个端点
                         const line = new LineString(measurementCoordinates.value);
                         const lengthText = formatLength(line);
                         const lineFeature = new Feature({
@@ -119,7 +119,7 @@ onMounted(() => {
                         });
                         measurementSource.clear();
                         measurementSource.addFeature(lineFeature);
-                    } else if (currentMeasurementType.value === 'area' && measurementCoordinates.value.length >= 3) {
+                    } else if (currentMeasurementType.value === 'area' && measurementCoordinates.value.length >= 3) { // 多边形 至少3个端点
                         const polygon = new Polygon([measurementCoordinates.value]);
                         const areaText = formatArea(polygon);
                         const polygonFeature = new Feature({
