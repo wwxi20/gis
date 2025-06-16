@@ -1,5 +1,5 @@
 <script setup>
-import MapData from './components/MapData.vue';
+import MapData from '../../components/home/MapData.vue';
 
 </script>
 

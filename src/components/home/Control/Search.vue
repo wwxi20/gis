@@ -20,11 +20,8 @@ import { Point } from 'ol/geom';
 import { Vector as VectorLayer } from 'ol/layer';
 import { Vector as VectorSource } from 'ol/source';
 import { Style, Circle, Fill, Stroke } from 'ol/style';
-import proj4 from 'proj4'; // 坐标转换
+import Coordinate from '@/utils/coordinate';
 
-// 定义 EPSG:4326 和 EPSG:3857 的投影定义
-proj4.defs('EPSG:4326', '+proj=longlat +datum=WGS84 +no_defs');
-proj4.defs('EPSG:3857', '+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs');
 
 // 接收父组件传递的地图实例
 const props = defineProps({
@@ -74,7 +71,7 @@ const addMarkers = (pois) => {
         const point = [Number(lon), Number(lat)];
 
         // 进行坐标转换
-        const convertedPoint = proj4('EPSG:4326', 'EPSG:3857', point);
+        const convertedPoint = Coordinate('EPSG:4326', 'EPSG:3857', point);
         
         const feature = new Feature({
             geometry: new Point(convertedPoint),
@@ -115,8 +112,9 @@ const jumpToLocation = (result) => {
     // 提取经纬度
     const [lon, lat] = result.lonlat.split(',');
     const point = [Number(lon), Number(lat)];
-    // 进行坐标转换
-    const convertedPoint = proj4('EPSG:4326', 'EPSG:3857', point);
+    // 进行坐标转换 to3857
+    const convertedPoint = Coordinate('EPSG:4326', 'EPSG:3857', point);
+
     props.map.getView().setCenter(convertedPoint);
 
     // 恢复所有点的默认样式

@@ -17,13 +17,13 @@ import Map from 'ol/Map.js';
 import View from 'ol/View.js';
 import TileLayer from 'ol/layer/Tile.js';
 import XYZ from 'ol/source/XYZ.js';
-import Search from './search.vue';
+import Search from './Control/Search.vue';
 import ToolBox from './Control/ToolBox.vue';
-import Mark from './Mark.vue';
-import Measure from './Measure.vue';
+import Mark from './Control/Mark.vue';
+import Measure from './Control/Measure.vue';
 import { ScaleLine } from 'ol/control';
 import LayerSelector from './Control/LayerSelector.vue'; // 引入子组件
-import Profile from './Profile.vue';
+import Profile from './Control/Profile.vue';
 
 const props = defineProps({
     viewConf: { default: () => ({}) },
