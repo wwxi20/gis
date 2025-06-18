@@ -15,10 +15,10 @@
         </div>
       </div>
       <div class="button-group">
-        <button @click="searchBusRoute" :disabled="loadingState!=='loaded'">
+        <button @click="searchBusRoute" :disabled="loadingState !== 'loaded'">
           <i class="fa fa-search"></i>查询公交路线
         </button>
-        <button @click="clearRoute" :disabled="loadingState!=='loaded'">
+        <button @click="clearRoute" :disabled="loadingState !== 'loaded'">
           <i class="fa fa-eraser"></i>清除路线
         </button>
       </div>
@@ -60,123 +60,138 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, reactive, nextTick } from 'vue';
-// 天地图密钥
-const TIANDITU_KEY = 'e2d035db12beacb76df2c1efc7ec03ab';
+import { ref, onMounted, onUnmounted, reactive, nextTick } from 'vue'
+import { searchBusRoute as searchBusRouteApi } from '@/api/navigation'
+import { TIANDITU_KEY } from '@/api/config'
 // 地图容器引用
-const mapContainer = ref(null);
+const mapContainer = ref(null)
 // 地图对象
-let map = null;
+let map = null
 // 公交路线规划对象
-let transitRoute = null;
+let transitRoute = null
 // 加载状态管理
-const loadingState = ref('loading');
-const loadingMessage = ref('正在加载地图...');
-const loadingError = ref('');
+const loadingState = ref('loading')
+const loadingMessage = ref('正在加载地图...')
+const loadingError = ref('')
 // 表单数据
-const startPoint = ref('');
-const endPoint = ref('');
+const startPoint = ref('')
+const endPoint = ref('')
 // 路线信息
-const routeInfo = ref([]);
+const routeInfo = ref([])
 
 // 初始化地图
 const initMap = () => {
   try {
     // 创建地图实例
-    map = new T.Map(mapContainer.value);
+    map = new T.Map(mapContainer.value)
     // 设置地图中心点和缩放级别
-    map.centerAndZoom(new T.LngLat(105.403119, 38.028658), 4);
+    map.centerAndZoom(new T.LngLat(105.403119, 38.028658), 4)
     // 添加地图控件
-    map.addControl(new T.Scale());
-    map.addControl(new T.NavigationControl());
+    map.addControl(new T.Scale())
+    map.addControl(new T.NavigationControl())
     // 初始化公交路线规划
     transitRoute = new T.TransitRoute(map, {
       renderOptions: {
         map: map,
-        autoViewport: true
+        autoViewport: true,
       },
       onSearchComplete: (results) => {
         if (transitRoute.getStatus() === T.STATUS_SUCCESS) {
-          const plans = results.getPlans();
-          const parsedRoutes = plans.map(plan => {
-            const route = plan.getRoute(0);
-            const steps = route.getSteps().map(step => ({
+          const plans = results.getPlans()
+          const parsedRoutes = plans.map((plan) => {
+            const route = plan.getRoute(0)
+            const steps = route.getSteps().map((step) => ({
               action: step.getAction(),
               instruction: step.getInstruction(),
               distance: step.getDistance(),
-              duration: Math.round(step.getDuration() / 60)
-            }));
+              duration: Math.round(step.getDuration() / 60),
+            }))
             return {
               distance: route.getDistance(),
               duration: Math.round(route.getDuration() / 60),
-              steps: steps
-            };
-          });
-          routeInfo.value = parsedRoutes;
+              steps: steps,
+            }
+          })
+          routeInfo.value = parsedRoutes
         } else {
-          alert('公交路线规划失败，请检查起点和终点是否正确');
+          alert('公交路线规划失败，请检查起点和终点是否正确')
         }
-      }
-    });
-    loadingState.value = 'loaded';
-    loadingMessage.value = '地图加载完成';
+      },
+    })
+    loadingState.value = 'loaded'
+    loadingMessage.value = '地图加载完成'
   } catch (error) {
-    console.error('地图初始化失败:', error);
-    loadingState.value = 'error';
-    loadingError.value = error.message;
-    alert(`地图加载失败: ${error.message}`);
+    console.error('地图初始化失败:', error)
+    loadingState.value = 'error'
+    loadingError.value = error.message
+    alert(`地图加载失败: ${error.message}`)
   }
-};
+}
 
 // 查询公交路线
-const searchBusRoute = () => {
-  if (loadingState.value!== 'loaded') {
-    alert('地图尚未加载完成，请稍候再试');
-    return;
+const searchBusRoute = async () => {
+  if (loadingState.value !== 'loaded') {
+    alert('地图尚未加载完成，请稍候再试')
+    return
   }
-  if (!startPoint.value ||!endPoint.value) {
-    alert('请输入起点和终点');
-    return;
+  if (!startPoint.value || !endPoint.value) {
+    alert('请输入起点和终点')
+    return
   }
-  transitRoute.search(startPoint.value, endPoint.value);
-};
+
+  try {
+    // 使用封装的API服务
+    const result = await searchBusRouteApi(startPoint.value, endPoint.value)
+
+    if (result.success) {
+      routeInfo.value = result.data
+      // 使用天地图API在地图上绘制路线
+      transitRoute.search(startPoint.value, endPoint.value)
+    } else {
+      alert(result.message || '公交路线规划失败')
+    }
+  } catch (error) {
+    console.error('公交路线规划失败:', error)
+    alert('公交路线规划请求出错')
+  }
+}
 
 // 清除路线
 const clearRoute = () => {
-  routeInfo.value = [];
+  routeInfo.value = []
   // 清除地图上的路线覆盖物
-  map.removeOverlays();
-};
+  map.removeOverlays()
+}
 
 // 生命周期钩子
 onMounted(() => {
-  loadingState.value = 'loading';
-  loadingMessage.value = '正在加载天地图API...';
+  loadingState.value = 'loading'
+  loadingMessage.value = '正在加载天地图API...'
   // 动态加载天地图 API
-  const script = document.createElement('script');
-  script.src = `https://api.tianditu.gov.cn/api?v=4.0&tk=${TIANDITU_KEY}`;
+  const script = document.createElement('script')
+  script.src = `https://api.tianditu.gov.cn/api?v=4.0&tk=${TIANDITU_KEY}`
   script.onload = () => {
-    console.log('天地图API加载完成');
+    console.log('天地图API加载完成')
     nextTick(() => {
-      initMap();
-    });
-  };
+      initMap()
+    })
+  }
   script.onerror = () => {
-    loadingState.value = 'error';
-    loadingError.value = '天地图API加载失败，请检查网络连接或API密钥';
-    alert(loadingError.value);
-  };
-  document.body.appendChild(script);
-});
+    loadingState.value = 'error'
+    loadingError.value = '天地图API加载失败，请检查网络连接或API密钥'
+    alert(loadingError.value)
+  }
+  document.body.appendChild(script)
+})
 
 onUnmounted(() => {
   // 清理地图资源
   if (map) {
-    map.destroy();
-    map = null;
+    map.destroy()
+    map = null
   }
-  transitRoute = null;
-});
+  transitRoute = null
+})
 </script>
 
 <style scoped>
@@ -373,11 +388,11 @@ body {
 
 /* 响应式设计 */
 @media (max-width: 600px) {
- .input-section {
+  .input-section {
     flex-direction: column;
   }
 
- .route-summary {
+  .route-summary {
     grid-template-columns: 1fr;
   }
 }
